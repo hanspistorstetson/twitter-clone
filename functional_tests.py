@@ -36,7 +36,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == 'I could really use a coffee right now!' for row in rows)
+            any(row.text == 'I could really use a coffee right now!' for row in rows),
+            "New tweet did not appear in table"
         )
 
         # There is still a textbox inviting him to tweet again, so he enters "Myspace is so 2008"
