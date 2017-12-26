@@ -3,5 +3,5 @@ from django.http import HttpResponse
 
 
 # Create your views here.
-def index(self):
-    return HttpResponse('<html><title>Twitter</title></html>')
+def index(request):
+    return render(request, 'twitter/index.html')
