@@ -13,6 +13,11 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Mark has heard about a cool new website where he can say whatever he wants! He goes to checkout it's homepage
         self.browser.get("http://localhost:8000")
@@ -33,9 +38,7 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('I could really use a coffee right now!', [row.text for row in rows])
+        self.check_for_row_in_list_table('I could really use a coffee right now!')
 
         # There is still a textbox inviting him to tweet again, so he enters "Myspace is so 2008"
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -44,10 +47,8 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(1)
 
         # The page updates again, showing both his tweets
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('I could really use a coffee right now!', [row.text for row in rows])
-        self.assertIn('Myspace is so 2008', [row.text for row in rows])
+        self.check_for_row_in_list_table('I could really use a coffee right now!')
+        self.check_for_row_in_list_table('Myspace is so 2008')
 
         # Mark wonders if the site will remember his list, then he sees that the site unqiue url just for him
 
