@@ -35,14 +35,19 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == 'I could really use a coffee right now!' for row in rows),
-            "New tweet did not appear in table"
-        )
+        self.assertIn('I could really use a coffee right now!', [row.text for row in rows])
 
         # There is still a textbox inviting him to tweet again, so he enters "Myspace is so 2008"
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Myspace is so 2008')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
 
         # The page updates again, showing both his tweets
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('I could really use a coffee right now!', [row.text for row in rows])
+        self.assertIn('Myspace is so 2008', [row.text for row in rows])
 
         # Mark wonders if the site will remember his list, then he sees that the site unqiue url just for him
 

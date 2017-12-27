@@ -4,4 +4,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return render(request, 'twitter/index.html')
+    context = {
+        'new_item_text': request.POST.get('item_text', '')
+    }
+    return render(request, 'twitter/index.html', context)
